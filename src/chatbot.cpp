@@ -44,6 +44,78 @@ ChatBot::~ChatBot()
 
 //// STUDENT CODE
 ////
+// Rule of five integration
+// 1. copy constructor
+ChatBot::ChatBot(const ChatBot &source)
+{
+  std::cout << "ChatBot Copy Constructor" << std::endl;
+  // copy all handled data from source
+  _image = new wxBitmap(*source._image);
+  _chatLogic = source._chatLogic;
+  _rootNode = source._rootNode;
+  _currentNode = source._currentNode;
+  
+}
+
+// 2. copy assignment operator
+ChatBot &Chatbot::operator=(const ChatBot &source)
+{
+   std::cout << "ChatBot Copy Assignment Operator" << std::endl;
+    if(this == &source)
+        return *this;
+    
+    delete _image;
+  
+    _image = new wxBitmap(*source._image);
+  
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
+
+    return *this;
+}
+// 3. move constructor 
+ChatBot::ChatBot(ChatBot &&source)
+{
+    std::cout << "ChatBot Move Constructor" << std::endl;
+    _image = source._image;
+  
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
+
+    _chatLogic->SetChatbotHandle(this);
+
+    source._image = NULL;
+    source._currentNode = nullptr;
+    source._rootNode = nullptr;
+    source._chatLogic = nullptr;
+}
+// 4. move assignment operator
+ChatBot &ChatBot::operator=(ChatBot &&source)
+{
+    std::cout << "ChatBot Move Assignment Operator" << std::endl;
+    if(this == &source)
+        return *this;
+    
+    delete _image;
+    _image = source._image;
+    // // _currentNode = source._currentNode;
+    // // _rootNode = source._rootNode;
+    // // _chatLogic = source._chatLogic;
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
+
+    _chatLogic->SetChatbotHandle(this);
+
+    source._image = NULL;
+    source._currentNode = nullptr;
+    source._rootNode = nullptr;
+    source._chatLogic = nullptr;
+
+    return *this;
+}
 
 ////
 //// EOF STUDENT CODE

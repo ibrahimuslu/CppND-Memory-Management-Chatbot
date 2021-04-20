@@ -29,7 +29,15 @@ public:
 
     //// STUDENT CODE
     ////
-
+	// Rule of five integration
+    // 1.copy contructor
+    Chatbot(const Chatbot &source);
+    // 2. copy assignment operator
+    Chatbot &operator=(const Chatbot &source);
+    // 3. move constructor
+    Chatbot(Chatbot &&source);
+    // 4. move assignment operator
+    Chatbot &operator=(Chatbot &&source); 
     ////
     //// EOF STUDENT CODE
 
