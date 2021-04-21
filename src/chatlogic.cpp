@@ -42,14 +42,15 @@ ChatLogic::~ChatLogic()
     {
         delete *it;
     }
-    */
   
     // delete all edges
+    // handled by unique smart pointers - not neccessary anymore
     for (auto it = std::begin(_edges); it != std::end(_edges); ++it)
     {
         delete *it;
     }
 
+    */
     ////
     //// EOF STUDENT CODE
 }
@@ -166,7 +167,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                             auto childNode = std::find_if(_nodes.begin(), _nodes.end(), [&childToken](const std::unique_ptr<GraphNode> &node) { return node->GetID() == std::stoi(childToken->second); });
 
                             // create new edge
-                            GraphEdge *edge = new GraphEdge(id);
+                            std::unique_ptr<GraphEdge> edge(new GraphEdge(id));
                           
                             // get unique node information 
                             edge->SetChildNode((*childNode).get()); 
@@ -179,8 +180,8 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                             AddAllTokensToElement("KEYWORD", tokens, *edge);
 
                             // store reference in child node and parent node
-                            (*childNode)->AddEdgeToParentNode(edge);
-                            (*parentNode)->AddEdgeToChildNode(edge);
+                            (*childNode)->AddEdgeToParentNode(edge.get());
+                            (*parentNode)->AddEdgeToChildNode(std::move(edge));
                         }
 
                         ////
